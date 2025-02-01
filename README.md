@@ -18,3 +18,7 @@ make
 ```
 
 Note o nome do projeto no arquivo CMake e modifique-o para sua preferencia.
+
+## Behavior Tree
+
+![bt image](bt.png)
