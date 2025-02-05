@@ -12,9 +12,10 @@ Lembrando o processo para execucao de um no:
 ## Como Executar esse repositorio
 
 ```bash
-source /opt/ros/setup.bash
+source /opt/ros/humble/setup.bash
 cmake .
 make
+./your_project_name
 ```
 
 Note o nome do projeto no arquivo CMake e modifique-o para sua preferencia.
