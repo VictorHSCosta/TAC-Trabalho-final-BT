@@ -16,12 +16,6 @@
         <AspirarChao/>
         <DetectarObstaculoCamera/>
         <DetectarObstaculoLIDAR/>
-        <authenticate_nurse wait_duration_sec="100"
-                            message="{auth}"/>
-        <publisher_nurse_deposit_sample message="{auth}"
-                                        number="5"/>
-        <publisher_authenticate_robot duration="100"
-                                      message="{auth_robot}"/>
       </Sequence>
     </Sequence>
   </BehaviorTree>
@@ -56,33 +50,6 @@
     <Action ID="go_to_laboratory"
             editable="true">
       <input_port name="laboratory_name"/>
-    </Action>
-    <Action ID="publisher_approach_nurse"
-            editable="true">
-      <input_port name="message"/>
-      <input_port name="number"/>
-      <output_port name="laboratory_name"/>
-    </Action>
-    <Action ID="publisher_authenticate_robot"
-            editable="true">
-      <input_port name="duration"/>
-      <output_port name="message"/>
-    </Action>
-    <Action ID="publisher_close_drawer"
-            editable="true">
-      <input_port name="message"/>
-      <input_port name="number"/>
-    </Action>
-    <Action ID="publisher_nurse_deposit_sample"
-            editable="true">
-      <input_port name="message"/>
-      <input_port name="number"/>
-    </Action>
-    <Action ID="publisher_open_drawer"
-            editable="true">
-      <input_port name="authorized"/>
-      <input_port name="message"/>
-      <input_port name="number"/>
     </Action>
   </TreeNodesModel>
 

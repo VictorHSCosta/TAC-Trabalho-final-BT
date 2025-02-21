@@ -356,70 +356,6 @@ public:
     }
 };
 
-class authenticate_nurse : public BT::SyncActionNode{
-	public:
-  		authenticate_nurse(const std::string& name, const BT::NodeConfiguration& config) :
-      		BT::SyncActionNode(name, config){}
-    		static BT::PortsList providedPorts() { return {  INPUT("wait_duration_sec"), OUTPUT("message")};}
-  		
-		BT::NodeStatus tick() override{
-			BT::Optional<std::string> wait_duration_seconds = getInput<std::string>("wait_duration_sec");
-			string msg;
-			cout << "Informe o codigo de autenticacao da enfermeira presente\n>: ";
-			cin >> msg;
-			setOutput("message", msg);
-			if (msg!="A") return FF; // se fosse algo de verdade, usaria algo mais seguro como salvar um hash da senha e uma senha mais complexa
-    			return SS;
-  		}
-};
-class publisher_approach_nurse : public BT::SyncActionNode {
-	public:
-    		publisher_approach_nurse(const std::string& name, const BT::NodeConfiguration& config) :
-        	BT::SyncActionNode(name, config) {}
-
-    		static BT::PortsList providedPorts() { return {  INPUT("message"), INPUT("number"), OUTPUT("laboratory_name")};}
-
-    		BT::NodeStatus tick() override {
-        		string lab;
-			cout << "Qual o laboratorio deseja que o robo va (A/B)?\n>: ";
-			cin >> lab;
-			setOutput("laboratory_name", lab);
-			BT::Optional<std::string> msg = getInput<std::string>("message");
-			BT::Optional<std::string> number = getInput<std::string>("number");
-			if (lab!="A" and lab!="B") return FF;
-        		return SS;
-    		}
-};
-class publisher_nurse_deposit_sample : public BT::SyncActionNode{
-	public:
-  		publisher_nurse_deposit_sample(const std::string& name, const BT::NodeConfiguration& config) :
-      		BT::SyncActionNode(name, config){}
-    		static BT::PortsList providedPorts() { return {INPUT("message"), INPUT("number")};}
-  		
-		BT::NodeStatus tick() override{
-			BT::Optional<std::string> message = getInput<std::string>("message");
-			BT::Optional<std::string> number = getInput<std::string>("number");
-    			return SS;
-  		}
-};
-class publisher_authenticate_robot : public BT::SyncActionNode{
-	public:
-  		publisher_authenticate_robot(const std::string& name, const BT::NodeConfiguration& config) :
-      		BT::SyncActionNode(name, config){}
-    		static BT::PortsList providedPorts() { return {  INPUT("duration"), OUTPUT("message")};}
-  		
-		BT::NodeStatus tick() override{
-			BT::Optional<std::string> duration = getInput<std::string>("duration");
-			string msg;
-			cout << "Robo, informe o codigo de autenticacao\n>: ";
-			cin >> msg;
-			if (msg!="A") return FF;
-			setOutput("message", msg);
-    			return SS;
-  		}
-};
-
-
 class AbortarMissao : public BT::SyncActionNode
 {
 public:
@@ -436,42 +372,6 @@ public:
     }
 };
 
-class go_to_laboratory : public BT::SyncActionNode{
-	public:
-  		go_to_laboratory(const std::string& name, const BT::NodeConfiguration& config) :
-      		BT::SyncActionNode(name, config){}
-    		static BT::PortsList providedPorts() { return {INPUT("laboratory_name")};}
-  		
-		BT::NodeStatus tick() override{
-			BT::Optional<std::string> laboratory_name = getInput<std::string>("laboratory_name");
-    			return SS;
-  		}
-};
-class publisher_open_drawer : public BT::SyncActionNode{
-	public:
-  		publisher_open_drawer(const std::string& name, const BT::NodeConfiguration& config) :
-      		BT::SyncActionNode(name, config){}
-    		static BT::PortsList providedPorts() { return {INPUT("authorized"), INPUT("message"), INPUT("number")};}
-  		
-		BT::NodeStatus tick() override{
-			BT::Optional<std::string> authorized = getInput<std::string>("authorized");
-			BT::Optional<std::string> message = getInput<std::string>("message");
-			BT::Optional<std::string> number = getInput<std::string>("number");
-    			return SS;
-  		}
-};
-class publisher_close_drawer : public BT::SyncActionNode{
-	public:
-  		publisher_close_drawer(const std::string& name, const BT::NodeConfiguration& config) :
-      		BT::SyncActionNode(name, config){}
-    		static BT::PortsList providedPorts() { return {INPUT("message"), INPUT("number")};}
-  		
-		BT::NodeStatus tick() override{
-			BT::Optional<std::string> message = getInput<std::string>("message");
-			BT::Optional<std::string> number = getInput<std::string>("number");
-    			return SS;
-  		}
-};
 
 int main(){
 	BT::BehaviorTreeFactory factory;
@@ -489,13 +389,6 @@ int main(){
 	factory.registerNodeType<AspirarChao>("AspirarChao");
 	factory.registerNodeType<AcoplarNaEstacao>("AcoplarNaEstacao");
 	factory.registerNodeType<AbortarMissao>("AbortarMissao");
-  	factory.registerNodeType<authenticate_nurse>("authenticate_nurse");
-  	factory.registerNodeType<go_to_laboratory>("go_to_laboratory");
-  	factory.registerNodeType<publisher_approach_nurse>("publisher_approach_nurse");
-  	factory.registerNodeType<publisher_authenticate_robot>("publisher_authenticate_robot");
-  	factory.registerNodeType<publisher_close_drawer>("publisher_close_drawer");
-  	factory.registerNodeType<publisher_nurse_deposit_sample>("publisher_nurse_deposit_sample");
-  	factory.registerNodeType<publisher_open_drawer>("publisher_open_drawer");
 	auto tree = factory.createTreeFromFile("./exercicio.xml");
   	auto result = tree.tickRootWhileRunning();
 	std::cout << "\nBT ended with result: " << result << std::endl;
