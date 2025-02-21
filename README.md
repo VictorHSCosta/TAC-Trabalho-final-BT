@@ -86,12 +86,3 @@ Este projeto foi desenvolvido para demonstrar o uso de **árvores de comportamen
 Se precisar de ajuda, abra uma *issue* ou contribua com melhorias! 🚀
 ```
 
----
-
-### ✅ **O que esse README resolve?**
-✔ Explica **como instalar as dependências** corretamente.  
-✔ Garante que o **caminho do usuário (`$USER`) seja dinâmico**, funcionando em qualquer computador.  
-✔ Inclui **solução para erros comuns**.  
-✔ Explica **como executar o código** de forma clara.  
-
-Agora você pode salvar esse arquivo como **README.md** e adicioná-lo ao seu repositório! 🚀
