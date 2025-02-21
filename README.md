@@ -1,8 +1,4 @@
-Aqui está um **README.md** que explica como rodar o projeto em qualquer computador. Ele inclui instruções para instalação das dependências e compilação passo a passo.  
 
----
-
-### 📌 **README.md**
 ```markdown
 # TAC - Trabalho Final - Behavior Tree
 
