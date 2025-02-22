@@ -84,7 +84,7 @@ Agora, tente rodar `./BT` novamente.
 Este projeto foi desenvolvido para demonstrar o uso de **árvores de comportamento** com a biblioteca BehaviorTree.CPP. Ele simula um robô que executa tarefas baseadas em nós de decisão.
 
 Se precisar de ajuda, abra uma *issue* ou contribua com melhorias! 🚀
-```
+
 
 ## ** Diagrama UML das classes usadas **
 
