@@ -7,11 +7,82 @@
 using namespace std;
 #include <thread>  // Para usar std::this_thread::sleep_for
 #include <chrono>  // Para std::chrono::seconds
-//		Foi adaptado o codigo do github em que a behaviour tree corresponderia ao arquivo exercicio.xml
-//		que seria o exercicio passado. Comandos para compilar e executar seriam:
-//		>> cmake .
-//		>> make
-//		>> ./BT
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+class IdentificarObjetosEstranhos : public BT::SyncActionNode
+{
+public:
+    IdentificarObjetosEstranhos(const std::string& name, const BT::NodeConfiguration& config)
+        : BT::SyncActionNode(name, config) 
+    {
+        // Inicializa a semente do gerador de números aleatórios
+        std::srand(std::time(nullptr));
+    }
+
+    static BT::PortsList providedPorts()
+    {
+        return {};
+    }
+
+    BT::NodeStatus tick() override
+    {
+        // Gera um número aleatório (0 ou 1) para determinar o resultado
+        bool objetoEncontrado = std::rand() % 2;
+
+        if (objetoEncontrado)
+        {
+            std::cout << "Objeto estranho encontrado!" << std::endl;
+            return SS ;
+        }
+        else
+        {
+            std::cout << "Nenhum objeto estranho encontrado." << std::endl;
+            return FF;
+        }
+    }
+};
+
+
+
+class TirarFotoObjeto : public BT::SyncActionNode
+{
+public:
+    TirarFotoObjeto(const std::string& name, const BT::NodeConfiguration& config)
+        : BT::SyncActionNode(name, config) {}
+
+    static BT::PortsList providedPorts()
+    {
+        return {};
+    }
+
+    BT::NodeStatus tick() override
+    {
+        std::cout << "Foto do objeto tirada com sucesso!" << std::endl;
+        return BT::NodeStatus::SUCCESS;
+    }
+};
+
+
+class RemoverObjetoColetavel : public BT::SyncActionNode
+{
+public:
+    RemoverObjetoColetavel(const std::string& name, const BT::NodeConfiguration& config)
+        : BT::SyncActionNode(name, config) {}
+
+    static BT::PortsList providedPorts()
+    {
+        return {};
+    }
+
+    BT::NodeStatus tick() override
+    {
+        std::cout << "Objeto coletado com sucesso!" << std::endl;
+        return BT::NodeStatus::SUCCESS;
+    }
+};
+
 
 class VerificarEquipamentos : public BT::ConditionNode
 {
@@ -60,13 +131,13 @@ public:
         std::cout << "[VerificarBateria] Checando nível da bateria..." << std::endl;
 
         // Gera um nível de bateria aleatório entre 10% e 100%
-        int nivel_bateria = 10 + (rand() % 91);
+        int nivel_bateria = 5 + (rand() % 96);
 
         // Sempre imprime a carga da bateria
         std::cout << "[VerificarBateria] Nível da bateria: " << nivel_bateria << "%" << std::endl;
 
         // Se a bateria estiver abaixo de 30%, precisa recarregar (retorna FAILURE)
-        if (nivel_bateria < 30)
+        if (nivel_bateria < 15)
         {
             std::cout << "[VerificarBateria] Preciso de recarga para completar a missão." << std::endl;
             return BT::NodeStatus::FAILURE;
@@ -335,7 +406,7 @@ public:
     BT::NodeStatus tick() override
     {
          std::cout << "robo acoplado" << std::endl;
-         return SS;
+         return FF;
     }
 };
 
@@ -352,7 +423,7 @@ public:
     {
         std::this_thread::sleep_for(std::chrono::seconds(1)); // Espera 1 segundo
         std::cout << "Chão aspirado com sucesso" << std::endl;
-        return SS;
+        return SS; 
     }
 };
 
@@ -375,6 +446,9 @@ public:
 
 int main(){
 	BT::BehaviorTreeFactory factory;
+    factory.registerNodeType<IdentificarObjetosEstranhos>("IdentificarObjetosEstranhos");
+    factory.registerNodeType<TirarFotoObjeto>("TirarFotoObjeto");
+    factory.registerNodeType<RemoverObjetoColetavel>("RemoverObjetoColetavel");
 	factory.registerNodeType<VerificarEquipamentos>("VerificarEquipamentos");
 	factory.registerNodeType<VerificarBateria>("VerificarBateria");
 	factory.registerNodeType<TempoParaConcluir>("TempoParaConcluir");

@@ -1,57 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="Untitled">
-    <Sequence>
-      <Sequence>
-        <VerificarEquipamentos/>
-        <VerificarBateria/>
-        <TempoParaConcluir ttc="{ttc}"/>
-        <SalaEstaLivre/>
-        <PassarPano/>
-        <MoverMobilia/>
-        <IrParaDestino x="7" y="1"/>
-        <EnviarMensagemParaGerente mensagem="Falha: mover mobilia"/>
-        <EsterilizarMobilia/>
-        <AcoplarNaEstacao/>
-        <AspirarChao/>
-        <DetectarObstaculoCamera/>
-        <DetectarObstaculoLIDAR/>
-      </Sequence>
-    </Sequence>
-  </BehaviorTree>
-
-  <!-- Description of Node Models (used by Groot) -->
-  <TreeNodesModel>
-    <Condition ID="VerificarEquipamentos" editable="true"/>
-    <Condition ID="VerificarBateria" editable="true"/>
-    <Action ID="TempoParaConcluir" editable="true">
-      <output_port name="ttc"/>
-    </Action>
-    <Condition ID="SalaEstaLivre" editable="true"/>
-    <Action ID="PassarPano" editable="true"/>
-    <Action ID="MoverMobilia" editable="true"/>
-    <Action ID="IrParaDestino" editable="true">
-      <input_port name="x"/>
-    <input_port name="y"/>
-    </Action>
-    <Action ID="EsterilizarMobilia" editable="true"/>
-    <Action ID="EnviarMensagemParaGerente" editable="true">
-      <input_port name="mensagem"/>
-    </Action>
-    <Condition ID="DetectarObstaculoLIDAR" editable="true"/>
-    <Condition ID="DetectarObstaculoCamera" editable="true"/>
-    <Action ID="AcoplarNaEstacao" editable="true"/>
-    <Action ID="authenticate_nurse"
-            editable="true">
-      <input_port name="wait_duration_sec"/>
-      <output_port name="message"/>
-    </Action>
-    <Action ID="AspirarChao" editable="true"/>
-    <Action ID="go_to_laboratory"
-            editable="true">
-      <input_port name="laboratory_name"/>
-    </Action>
-  </TreeNodesModel>
-
+<BehaviorTree ID="KeepingCleanMission">
+<Sequence>
+<VerificarBateria/>
+<VerificarEquipamentos/>
+<IrParaDestino x="5" y="1"/>
+<Fallback>
+<SalaEstaLivre/>
+<Sequence>
+<EnviarMensagemParaGerente mensagem="Sala ocupada, aguardando..."/>
+<AcoplarNaEstacao/>
+</Sequence>
+</Fallback>
+<Fallback>
+<Sequence>
+<IdentificarObjetosEstranhos/>
+<TirarFotoObjeto/>
+<EnviarMensagemParaGerente mensagem="Objeto estranho encontrado , favor remover"/>
+</Sequence>
+<RemoverObjetoColetavel/>
+</Fallback>
+<Sequence>
+<MoverMobilia/>
+<AspirarChao/>
+<PassarPano/>
+<EsterilizarMobilia/>
+</Sequence>
+<IrParaDestino name="IrParaDestinoFInal" x="0" y="0"/>
+</Sequence>
+</BehaviorTree>
+<!--  Description of Node Models (used by Groot)  -->
+<TreeNodesModel>
+<Action ID="AcoplarNaEstacao" editable="true"/>
+<Action ID="AspirarChao" editable="true"/>
+<Action ID="EnviarMensagemParaGerente" editable="true">
+<input_port name="mensagem"/>
+</Action>
+<Action ID="EsterilizarMobilia" editable="true"/>
+<Action ID="IdentificarObjetosEstranhos" editable="true"/>
+<Action ID="IrParaDestino" editable="true">
+<input_port name="x"/>
+<input_port name="y"/>
+</Action>
+<Action ID="MoverMobilia" editable="true"/>
+<Action ID="PassarPano" editable="true"/>
+<Action ID="RemoverObjetoColetavel" editable="true"/>
+<Condition ID="SalaEstaLivre" editable="true"/>
+<Action ID="TirarFotoObjeto" editable="true"/>
+<Condition ID="VerificarBateria" editable="true"/>
+<Condition ID="VerificarEquipamentos" editable="true"/>
+</TreeNodesModel>
 </root>
-
